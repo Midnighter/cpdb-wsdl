@@ -1,0 +1,2 @@
+PySimpleSOAP==1.10
+suds-jurko==0.6

@@ -17,10 +17,13 @@ Requirements
 ------------
 
 * SUDS_ (preferably) or
-* pysimplesoap_
+* pysimplesoap_ or
+* ZSI_, SOAPpy_ (inactive)
 
 .. _SUDS: https://bitbucket.org/jurko/suds
 .. _pysimplesoap: http://code.google.com/p/pysimplesoap/
+.. _SOAPpy: ZSI_
+.. _ZSI: http://pywebsvcs.sourceforge.net/
 
 Also take a look at the ``requirements.txt`` file that you can use with ``pip``
 to install the necessary packages, e.g.,
@@ -31,6 +34,7 @@ Authors
 -------
 
 * Beber, Moritz Emanuel
+* Kamburov, Atanas
 
 References
 ----------

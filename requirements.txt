@@ -1,2 +1,4 @@
 PySimpleSOAP==1.10
+PyXML==0.8.4
 suds-jurko==0.6
+ZSI==2.0-rc3

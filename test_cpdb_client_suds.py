@@ -8,12 +8,13 @@ Test Threaded Use of CPDB SOAP/WSDL API
 
 :Authors:
     Moritz Emanuel Beber
+    Atanas Kamburov
 :Date:
     2014-02-05
 :Copyright:
-    Copyright |c| 2014, Max-Plank-Institute for Molecular Genetics, all rights reserved.
+    Copyright |c| 2014, Max Plank Institute for Molecular Genetics, all rights reserved.
 :File:
-    test_cpdb_wsdl_client.py
+    test_cpdb_client_suds.py
 
 .. |c| unicode: U+A9
 """
@@ -21,12 +22,12 @@ Test Threaded Use of CPDB SOAP/WSDL API
 
 # stdlib
 import logging
+import json
 import re
 import random
 # external
 import nose.tools as nt
 # stdlib
-#from pysimplesoap.client import SoapClient, SoapFault
 from suds.client import Client, WebFault
 
 
@@ -34,42 +35,7 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger("suds").setLevel(logging.ERROR)
 LOGGER = logging.getLogger(__name__)
 
-CONFIG={
-        "wsdl_url": "http://cpdb.molgen.mpg.de/download/CPDB.wsdl",
-        "valid_gene_acc_types": [
-                "sgd-symbol", "hgnc-id", "sgd-id", "entrez-gi", "humancyc",
-                "intact", "unigene", "cygd", "entrez-gene", "hprd",
-                "mgi-symbol", "mgi-id", "hgnc-symbol", "refseq", "uniprot",
-                "ensembl", "reactome", "dip", "pdb"],
-        "valid_gene_func_types": ["P", "N", "G2", "G3", "G4", "G5", "C"],
-        "gene_func_descriptions": [
-                "manually curated pathways from pathway databases",
-                "interaction network neighborhood-based functional sets",
-                "Gene Ontology-based sets, GO level 2",
-                "Gene Ontology-based sets, GO level 3",
-                "Gene Ontology-based sets, GO level 4",
-                "Gene Ontology-based sets, GO level 5",
-                "protein complex-based sets"
-        ],
-        "small_gene_set": ["DLDH_HUMAN", "MDHC_HUMAN", "MDHM_HUMAN"],
-        "small_gene_set_ids": [
-                "entrez-gene:1738", "entrez-gene:4190", "entrez-gene:4191"
-        ],
-        "large_gene_set": [
-                "MDHM_HUMAN", "MDHC_HUMAN", "DLDH_HUMAN", "DHSA_HUMAN",
-                "DHSB_HUMAN", "C560_HUMAN", "DHSD_HUMAN", "ODO2_HUMAN",
-                "ODO1_HUMAN", "CISY_HUMAN", "ACON_HUMAN", "IDH3A_HUMAN",
-                "IDH3B_HUMAN", "IDH3G_HUMAN", "SUCA_HUMAN", "SUCB1_HUMAN",
-                "FUMH_HUMAN", "OGDHL_HUMAN", "ACOC_HUMAN", "DHTK1_HUMAN",
-                "AMAC1_HUMAN"
-        ],
-        "large_metabolite_set": [
-                "C00002", "C00011", "C00001", "C00004", "C00080", "C00003",
-                "C00008", "C00009", "C00024", "C00010", "C00122", "C00026",
-                "C00042", "C00451", "C00091", "C00158", "C00036", "C00417",
-                "C00497"
-        ]
-}
+CONFIG = json.load(open("config.json", "r"))
 
 
 class TestCPDBAPI(object):

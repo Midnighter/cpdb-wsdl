@@ -8,10 +8,26 @@ Outline
 
 ConsensusPathDB_ integrates interaction networks from many different databases
 into one seamless network [\ 1_ - 3_]. This Python module provides a class for threaded
-access to the SOAP/WSDL interface of CPDB_.
+access to the SOAP/WSDL interface of CPDB_ and testing.
 
 .. _CPDB: ConsensusPathDB_
 .. _ConsensusPathDB: http://consensuspathdb.org/
+
+Usage
+-----
+
+You can use ``nose`` to discover and run all tests. In this directory simply
+run:
+
+    nosetests
+
+If you prefer an interactive exploration of the API, you can use one of the
+provided `IPython Notebooks`_ or look at them in the nbviewer (`suds ipynb`_,
+`pysimplesoap ipynb`_).
+
+.. _`IPython Notebooks`: http://ipython.org/notebook.html
+.. _`suds ipynb`: http://nbviewer.ipython.org/github/Midnighter/cpdb-wsdl/blob/master/test_cpdb_client_suds.ipynb
+.. _`pysimplesoap ipynb`: http://nbviewer.ipython.org/github/Midnighter/cpdb-wsdl/blob/master/test_cpdb_client_pysimplesoap.ipynb
 
 Requirements
 ------------

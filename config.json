@@ -1,5 +1,6 @@
 {
     "wsdl_url": "http://cpdb.molgen.mpg.de/download/CPDB.wsdl",
+    "num_threads": 3,
     "valid_gene_acc_types": [
         "sgd-symbol", "hgnc-id", "sgd-id", "entrez-gi", "humancyc",
         "intact", "unigene", "cygd", "entrez-gene", "hprd",

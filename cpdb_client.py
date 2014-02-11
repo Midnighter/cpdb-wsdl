@@ -26,9 +26,9 @@ __all__ = ["WSDLQueryThread"]
 import logging
 import threading
 # stdlib
-from queue import Queue
+from uuid import uuid4
+from Queue import Queue
 # external
-#from pysimplesoap.client import SoapClient, SoapFault
 from suds.client import Client, WebFault
 
 
@@ -39,13 +39,13 @@ class WSDLQueryThread(threading.Thread):
     """
 
     """
+    sentinel = uuid4()
 
     def __init__(self, wsdl, task_queue=None, results=None, wsdl_kw_args={},
             **kw_args):
         """
         """
         super(WSDLQueryThread, self).__init__(**kw_args)
-#        self.client = SoapClient(wsdl=wsdl, **soap_kw_args)
         self.client = Client(wsdl, **wsdl_kw_args)
         self.task_queue = Queue() if task_queue is None else task_queue
         self.results = list() if results is None else results
@@ -54,17 +54,18 @@ class WSDLQueryThread(threading.Thread):
     def run(self):
         """
         """
-        while True: # maybe use `while not self.queue.empty():`
-            (func, args, kw_args) = self.queue.get()
+        for task in iter(self.task_queue.get, self.sentinel):
+            (func, args, kw_args) = task
+            LOGGER.debug("task found '%s'", str(func))
             try:
                 response = getattr(self.client.service, func)(*args, **kw_args)
-#            except SoapFault as err:
             except WebFault as err:
                 LOGGER.warn(str(err))
             else:
-                self._lock.acquire()
-                self.results.append(response)
-                self._lock.release()
+                with self._lock:
+                    self.results.append(response)
             finally:
                 self.task_queue.task_done()
+        LOGGER.debug("sentinel hit")
+        self.task_queue.task_done()
 

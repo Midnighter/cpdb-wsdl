@@ -25,10 +25,13 @@ import logging
 import json
 import re
 import random
+# stdlib
+from Queue import Queue
 # external
 import nose.tools as nt
-# stdlib
 from suds.client import Client, WebFault
+# project
+from cpdb_client import WSDLQueryThread
 
 
 logging.basicConfig(level=logging.INFO)
@@ -127,4 +130,28 @@ class TestCPDBAPI(object):
                 response["pValue"], response["qValue"])
         for multi in result[:5]:
             LOGGER.info("\t".join(multi))
+
+
+class TestWSDLQueryThread(object):
+
+    def setUp(self):
+        self.tasks = Queue()
+        self.results = list()
+        for _ in range(CONFIG["num_threads"]):
+            worker = WSDLQueryThread(CONFIG["wsdl_url"], self.tasks, self.results)
+            worker.start()
+
+    def tearDown(self):
+        for _ in range(CONFIG["num_threads"]):
+            self.tasks.put(WSDLQueryThread.sentinel)
+        self.tasks.join()
+
+    def test_version(self):
+        version_pattern = re.compile(r"cpdb\d+")
+        for _ in range(10):
+            self.tasks.put(("getCpdbVersion", (), {}))
+        self.tasks.join()
+        for response in self.results:
+            nt.ok_(version_pattern.match(str(response)))
+
 
